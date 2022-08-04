@@ -1,0 +1,42 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+{% include "header.html" %}
+<body>
+    <nav class="navbar navbar-light" style="background-color: #21BF73;">
+      <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">My To-do list</span>
+      </div>
+    </nav>
+
+    <form action="{{ url_for('to_do') }}" method="POST" novalidate>
+        <div class="input-group input-group-lg">
+            <input placeholder="write your next task here" type="text" class="form-control" name="to-do">
+        </div>
+    </form>
+
+    <div class="my-column row mb-3 text-center list" style="margin-top: 1rem; font-size: 1.5rem; font-family:'Roboto'; color: #607EAA">
+        <div class="col-4 themed-grid-col">to do list</div>
+        <div class="col-4 themed-grid-col">Status</div>
+        <div class="col-4 themed-grid-col">delete</div>
+        <hr>
+    </div>
+
+    {% for todo in to_do_list %}
+    <div class="row mb-3 text-center list" style="margin-top: 1rem">
+        <div class="col-4 themed-grid-col">{{ todo.to_do }}</div>
+        <div class="col-4 themed-grid-col">
+            {% if todo.finished == False %}
+                <label><a href="{{ url_for('change_status', id=todo.id) }}" style="color: #F76E11; text-decoration:none">Not Success</a></label>
+            {% else %}
+                <label class="success"><a href="{{ url_for('change_status', id=todo.id) }}" style="color: #A0D995; text-decoration:none">Success</a></label>
+            {% endif %}</div>
+        <div class="col-4 themed-grid-col"><a href="{{url_for('delete', id=todo.id)}}" class="button delete-button"><i class="fa-solid fa-x"></i></a></div>
+    </div>
+    <hr>
+    {% endfor %}
+
+</body>
+</html>
+{% endblock %}
